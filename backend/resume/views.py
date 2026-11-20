@@ -1,5 +1,7 @@
 
 import re
+import os
+import shutil
 from io import BytesIO
 
 import fitz
@@ -13,9 +15,20 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-pytesseract.pytesseract.tesseract_cmd = (
-    r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-)
+# Cross-platform Tesseract configuration
+TESSERACT_PATH = shutil.which("tesseract")
+
+if not TESSERACT_PATH:
+    WINDOWS_TESSERACT_PATH = (
+        r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+    )
+
+    if os.path.isfile(WINDOWS_TESSERACT_PATH):
+        TESSERACT_PATH = WINDOWS_TESSERACT_PATH
+
+if TESSERACT_PATH:
+    pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
+
 
 MAX_FILE_SIZE = 5 * 1024 * 1024
 
