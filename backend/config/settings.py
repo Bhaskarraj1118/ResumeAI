@@ -18,9 +18,13 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 if not SECRET_KEY:
     raise RuntimeError("SECRET_KEY is missing. Check backend/.env")
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    *[host.strip() for host in os.environ.get("ALLOWED_HOSTS", "").split(",") if host.strip()],
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -98,14 +102,15 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
-    'http://localhost:5174',
-    'http://127.0.0.1:5174',
-    'http://localhost:5175',
-    'http://127.0.0.1:5175',
-    'http://localhost:5176',
-    'http://127.0.0.1:5176',
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5174",
+    "http://localhost:5175",
+    "http://127.0.0.1:5175",
+    "http://localhost:5176",
+    "http://127.0.0.1:5176",
+    *[origin.strip() for origin in os.environ.get("CORS_ALLOWED_ORIGINS", "").split(",") if origin.strip()],
 ]
 
 REST_FRAMEWORK = {
