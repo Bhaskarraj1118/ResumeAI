@@ -6,6 +6,8 @@ import {
   LoaderCircle, X, Briefcase
 } from 'lucide-react'
 
+const API_URL = 'https://resumeai-backend-sj1f.onrender.com/api'
+
 function JobMatcher({ onBack }) {
   const [file, setFile] = useState(null)
   const [jobDescription, setJobDescription] = useState('')
@@ -52,18 +54,15 @@ function JobMatcher({ onBack }) {
       formData.append('resume', file)
       formData.append('job_description', jobDescription)
 
-      const response = await fetch(
-        'http://127.0.0.1:8000/api/job-match/',
-        {
-          method: 'POST',
-          body: formData
-        }
-      )
+      const response = await fetch(`${API_URL}/job-match/`, {
+        method: 'POST',
+        body: formData
+      })
 
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Job matching failed.')
+        throw new Error(data.error || data.message || 'Job matching failed.')
       }
 
       setResult(data)

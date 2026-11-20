@@ -22,7 +22,7 @@ import {
 } from 'lucide-react'
 import './App.css'
 
-const API_URL = 'http://127.0.0.1:8000/api'
+const API_URL = 'https://resumeai-backend-sj1f.onrender.com/api'
 
 function ATSChecker({ onBack }) {
   const [file, setFile] = useState(null)
